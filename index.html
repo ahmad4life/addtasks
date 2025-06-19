@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📘 Learning Tracker</title>
+  <style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+  background-size: cover;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+ 
+
+#form-popup, #add-button {
+  position: fixed;
+  cursor: grab;
+  user-select: none;
+}
+
+
+.wrapper {
+  max-width: 700px;
+  margin: auto;
+  padding: 30px 20px 100px;
+}
+
+
+li {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-in-out;
+  /* backdrop-filter: blur(4px); */
+}
+
+
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+
+    #total-time {
+      position: sticky;
+      top: 10px;
+      text-align: right;
+      background-color: #ffffffcc;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #222;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #fff;
+      padding: 16px;
+      margin: 12px 0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease-in-out;
+    }
+
+    li:hover {
+      transform: scale(1.01);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    input[type="checkbox"] {
+      margin-right: 14px;
+      transform: scale(1.4);
+      cursor: pointer;
+    }
+
+    .task-text {
+      flex: 1;
+    }
+
+    .completed .task-text {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .completed {
+      background-color: #f0f0f0;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .delete-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #cc0000;
+      transition: 0.2s ease;
+    }
+
+    .delete-btn:hover svg {
+      fill: #ff3333;
+    }
+    #add-button {
+       
+  position: fixed;
+  top: 11%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  background: #28a745;
+  color: white;
+  font-size: 1.4em;
+  padding: 16px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 10002;
+  
+  bottom: 30px;
+  right: 30px;
+  background: #28a745;
+  color: white;
+  font-size: 32px;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: visible !important;
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  
+}
+ 
+
+
+
+
+    /* Blur overlay when form is active */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(5px);
+      z-index: 250;
+    }
+
+    #form-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 300;
+    }
+
+    #form-popup input {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 240px;
+    }
+
+    #form-popup button {
+      background: #007bff;
+      color: white;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    #save-blur {
+      display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+}
+
+#save-notification {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #28a745;
+  color: white;
+  font-size: 1.4em;
+  padding: 16px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 10001;
+}
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.1em;
+  color: #007bff;
+}
+
+.edit-btn:hover {
+  color: #0056b3;
+}
+
+
+  </style>
+</head>
+<body>
+  
+  <div class="wrapper"> 
+    
+<!-- Save Notification -->
+<div id="save-blur"></div>
+<div id="save-notification">✅ Saved!</div>
+
+  <div id="total-time">🕒 Total Learning Time: 0 min 0 sec</div>
+  <h1 id="list-title">
+    <span id="title-text">📘 My Programming Journey</span>
+    <button onclick="editTitle()" title="Edit Title" style="background: none; border: none; cursor: pointer;">✏️</button>
+    <button onclick="saveListManually()" title="Save Checklist" style="background: none; border: none; cursor: pointer;">💾</button>
+  </h1>
+   
+
+  <ul id="task-list"> 
+     <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Python Print, Variables, Data Types</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">If-Else, Loops (for, while)</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Functions and Parameters</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Lists, Dictionaries, Tuples</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Palindrome Checker Project</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Build First Flask App</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Build To-Do Flask App</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">HTML/CSS Basics</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">JavaScript DOM Basics</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Build Portfolio Website</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+    <li><label><input type="checkbox" onchange="markDone(this)"> <span class="task-text">Build React Frontend (optional)</span></label><button class="delete-btn" onclick="deleteTask(this)"><svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg></button></li>
+  </ul>
+</div>
+  <button id="add-button" onclick="showForm()">+</button>
+
+
+  <!-- Blur Background -->
+  <div id="overlay" onclick="hideForm()"></div>
+
+ 
+  <!-- Add Button -->
+  
+
+
+  <!-- Add Task Form -->
+  <div id="form-popup">
+    <input type="text" id="new-task" placeholder="New Task..." />
+    <button onclick="addTask()">Add</button>
+  </div>
+
+  <script>
+    let totalSeconds = 0;
+    let lastCheckTime = Date.now();
+
+    function markDone(checkbox) {
+      const now = Date.now();
+      const li = checkbox.closest('li');
+      const timeSpent = Math.floor((now - lastCheckTime) / 1000);
+      lastCheckTime = now;
+
+      if (checkbox.checked) {
+        li.classList.add('completed');
+        totalSeconds += timeSpent;
+      } else {
+        li.classList.remove('completed');
+        totalSeconds -= timeSpent;
+        if (totalSeconds < 0) totalSeconds = 0;
+      }
+
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById("total-time").textContent =
+        `🕒 Total Learning Time: ${minutes} min ${seconds} sec`;
+    }
+
+    function showForm() {
+      document.getElementById("form-popup").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("new-task").focus();
+    }
+
+    function hideForm() {
+      document.getElementById("form-popup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function addTask() {
+  const input = document.getElementById("new-task");
+  const taskText = input.value.trim();
+  if (taskText === "") return;
+
+  const li = document.createElement("li");
+  li.innerHTML = `
+    <label>
+      <input type="checkbox" onchange="markDone(this)">
+      <span class="task-text">${taskText}</span>
+    </label>
+    <button class="edit-btn" onclick="editTask(this)">✏️</button>
+    <button class="delete-btn" onclick="deleteTask(this)">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg>
+    </button>
+  `;
+
+  document.getElementById("task-list").appendChild(li);
+  input.value = "";
+  hideForm();
+}
+
+    function deleteTask(button) {
+      const li = button.closest('li');
+      li.remove();
+    }
+    function editTitle() {
+  const titleSpan = document.getElementById("title-text");
+  const currentTitle = titleSpan.textContent;
+
+  // Create input field
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = currentTitle;
+  input.style.fontSize = "1.2em";
+  input.style.padding = "6px";
+  input.style.borderRadius = "8px";
+  input.style.border = "1px solid #ccc";
+  input.style.width = "70%";
+  input.style.marginTop = "10px";
+
+  // Replace title text with input
+  const titleElement = document.getElementById("list-title");
+  titleElement.innerHTML = ""; // Clear current content
+  titleElement.appendChild(input);
+
+  // Focus and save on Enter or blur
+  input.focus();
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveTitle(input.value);
+  });
+  input.addEventListener("blur", () => saveTitle(input.value));
+}
+
+function saveTitle(newTitle) {
+  const titleElement = document.getElementById("list-title");
+  titleElement.innerHTML = `
+    <span id="title-text">${newTitle}</span>
+    <button id="edit-title-btn" onclick="editTitle()" title="Edit Title" style="background: none; border: none; cursor: pointer;">✏️</button>
+  `;
+}
+// Save title and unchecked tasks to localStorage
+function saveListManually() {
+  const title = document.getElementById("title-text").textContent;
+  const items = Array.from(document.querySelectorAll('#task-list li'))
+    .filter(li => !li.classList.contains("completed"))
+    .map(li => li.querySelector('.task-text').textContent);
+
+  localStorage.setItem("myChecklistTitle", title);
+  localStorage.setItem("myChecklistItems", JSON.stringify(items));
+
+  // Show save notification
+  document.getElementById("save-blur").style.display = "block";
+  const notify = document.getElementById("save-notification");
+  notify.style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("save-blur").style.display = "none";
+    notify.style.display = "none";
+  }, 1000);
+}
+
+
+// Load saved list on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTitle = localStorage.getItem("myChecklistTitle");
+  const savedItems = JSON.parse(localStorage.getItem("myChecklistItems"));
+
+  if (savedTitle) {
+    document.getElementById("title-text").textContent = savedTitle;
+  }
+
+  if (savedItems && savedItems.length > 0) {
+    const ul = document.getElementById("task-list");
+    ul.innerHTML = ""; // Clear old
+    savedItems.forEach(itemText => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <label>
+          <input type="checkbox" onchange="markDone(this)">
+          <span class="task-text">${itemText}</span>
+        </label>
+        <button class="delete-btn" onclick="deleteTask(this)">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm2 3h14l-1.5 13H6.5L5 9zm6 2v8h2v-8h-2z"/></svg>
+        </button>
+      `;
+      ul.appendChild(li);
+    });
+  }
+});
+
+// Ctrl + S = Save shortcut
+document.addEventListener("keydown", function (e) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault();
+    saveListManually();
+  }
+});
+function editTask(button) {
+  const li = button.closest('li');
+  const taskText = li.querySelector('.task-text');
+
+  const currentText = taskText.textContent;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentText;
+  input.className = 'edit-input';
+  input.style.flex = '1';
+  input.style.marginRight = '10px';
+
+  // Replace span with input
+  taskText.replaceWith(input);
+  input.focus();
+
+  // Save when user presses Enter or clicks outside
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') finishEdit(input);
+  });
+
+  input.addEventListener('blur', function () {
+    finishEdit(input);
+  });
+}
+
+function finishEdit(input) {
+  const newText = input.value.trim() || "Untitled Task";
+  const span = document.createElement('span');
+  span.className = 'task-text';
+  span.textContent = newText;
+  input.replaceWith(span);
+}
+
+function makeDraggable(el) {
+  let isMouseDown = false, offsetX = 0, offsetY = 0;
+
+  el.addEventListener('mousedown', function (e) {
+    isMouseDown = true;
+    offsetX = e.clientX - el.getBoundingClientRect().left;
+    offsetY = e.clientY - el.getBoundingClientRect().top;
+    el.style.cursor = 'grabbing';
+    el.style.transition = 'none';
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!isMouseDown) return;
+    el.style.left = e.clientX - offsetX + 'px';
+    el.style.top = e.clientY - offsetY + 'px';
+    el.style.transform = 'none';
+  });
+
+  document.addEventListener('mouseup', function () {
+    isMouseDown = false;
+    el.style.cursor = 'grab';
+  });
+}
+makeDraggable(document.getElementById('add-button'));
+function makeVerticallyDraggable(el) {
+  let isDragging = false;
+  let offsetY = 0;
+
+  el.addEventListener('mousedown', function (e) {
+    isDragging = true;
+    offsetY = e.clientY - el.getBoundingClientRect().top;
+    el.style.cursor = 'grabbing';
+    el.style.transition = 'none';
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!isDragging) return;
+    const newY = e.clientY - offsetY;
+    el.style.top = newY + 'px';
+    el.style.transform = 'none';
+    el.style.position = 'fixed'; // Make sure it's positioned properly
+  });
+
+  document.addEventListener('mouseup', function () {
+    isDragging = false;
+    el.style.cursor = 'grab';
+  });
+}
+makeVerticallyDraggable(document.getElementById('form-popup'));
+makeVerticallyDraggable(document.getElementById('add-button'));
+function makeVerticallyDraggable(el) {
+  let isDragging = false;
+  let offsetY = 0;
+
+  el.addEventListener('mousedown', function (e) {
+    isDragging = true;
+    offsetY = e.clientY - el.getBoundingClientRect().top;
+    el.style.cursor = 'grabbing';
+    el.style.transition = 'none';
+    e.preventDefault(); // prevent text selection
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!isDragging) return;
+    const newY = e.clientY - offsetY;
+    el.style.top = newY + 'px';
+    el.style.left = el.getBoundingClientRect().left + 'px'; // keep horizontal fixed
+  });
+
+  document.addEventListener('mouseup', function () {
+    if (isDragging) {
+      isDragging = false;
+      el.style.cursor = 'grab';
+    }
+  });
+}
+
+// Activate dragging after page loads
+window.onload = function () {
+  makeVerticallyDraggable(document.getElementById('add-button'));
+  makeVerticallyDraggable(document.getElementById('form-popup'));
+};
+  </script>
+</body>
+</html>
