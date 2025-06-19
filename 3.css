@@ -1,0 +1,144 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: rgb(230, 237, 237);
+  color: #333;
+}
+
+.navbar{
+  border: 4px solid black;
+  width: 100%;
+  height: 40px;
+  position: fixed;
+  background-color:black;
+}
+#navbar-brand{
+  border: 2px solid black;
+  background-color: black;
+  width: 60px;
+  height: 36px;
+}
+img {
+  height:50px;
+  width: 50px;
+  float: left;
+  margin-left: 3px;
+  margin-top: -7px;
+  position: relative;
+}
+#html{
+  border:2px black;
+  background-color:black;
+  width: 150px;
+  height: 42px;
+  float: left;
+  margin-top: -41.5px;
+  margin-left: 14px;
+  padding: auto;
+  
+}
+
+#css {
+  border:2px black;
+  background-color:black;
+  width: 150px;
+  height: 42px;
+  float: left;
+  margin-top: -41.5px;
+  margin-left: 1px;
+}
+#JS{
+  border:2px black;
+  background-color:black;
+  width: 150px;
+  height: 42px;
+  float: left;
+  margin-top: -41.5px;
+  margin-left: 1px;}
+#login{
+  height: 35px;
+  float: right;
+  position: relative;
+  margin-top: -38px;
+  padding-right: 15px;
+
+}
+
+#htmltxt{
+  color: #898989;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Verdana; 
+}
+#htmltxt:hover{
+  color: #f06a00;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Verdana;  
+}
+#htmltxt:active{
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Verdana;  
+}
+
+
+header, footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+section {
+  padding: 30px;
+  max-width: 800px;
+  margin: auto; 
+
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+.project-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.project {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  width: calc(500% - 200px);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input, form textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 10px;
+  background: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2980b9;
+}
+.img{
+  text-align: center;
+}
